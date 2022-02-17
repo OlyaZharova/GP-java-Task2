@@ -4,6 +4,7 @@ import com.gp_solutions.task2.model.Developer;
 import com.gp_solutions.task2.service.DeveloperNotFoundException;
 import com.gp_solutions.task2.service.DeveloperService;
 import com.gp_solutions.task2.service.IncorrectDataException;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Api(value = "DeveloperController" , tags = {"Developer Controller"})
+@SwaggerDefinition(tags = {
+        @Tag(name = "Developer Controller", description = "Rest API for developer operations")
+})
 @RestController
 @RequestMapping("/api")
 public class DeveloperController {
@@ -18,6 +23,11 @@ public class DeveloperController {
     @Autowired
     private DeveloperService developerService;
 
+    @ApiOperation(value = "Find developer by id", response = Developer.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code =404, message = "404 error")
+    })
     @GetMapping("/developers/{id}")
     public ResponseEntity<?> findDeveloper(@PathVariable Long id) {
         try {
@@ -27,6 +37,11 @@ public class DeveloperController {
         }
     }
 
+    @ApiOperation(value = "Create developer")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code =404, message = "404 error")
+    })
     @PostMapping("/developers")
     public ResponseEntity<?> createDeveloper(@RequestBody Developer developer) {
         try {
@@ -37,6 +52,12 @@ public class DeveloperController {
         }
     }
 
+    @ApiOperation(value = "Update developer")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code =404, message = "404 error"),
+            @ApiResponse(code =400, message = "400 error")
+    })
     @PutMapping("/developers")
     public ResponseEntity<?> updateDeveloper(@RequestBody Developer developer) {
         try {
@@ -49,6 +70,11 @@ public class DeveloperController {
         }
     }
 
+    @ApiOperation(value = "Delete developer")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code =404, message = "404 error")
+    })
     @DeleteMapping("/developers/{id}")
     public ResponseEntity<?> deleteDeveloper(@PathVariable long id) {
         try {
@@ -59,6 +85,11 @@ public class DeveloperController {
         }
     }
 
+    @ApiOperation(value = "List of all developers", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code =404, message = "404 error")
+    })
     @GetMapping("/developers")
     public ResponseEntity<List<Developer>> getAllDeveloper() {
         List<Developer> developerList = developerService.getAllDeveloper();
